@@ -11,9 +11,7 @@ unsigned long lastTime = millis();
 unsigned long lastTimeDim = millis();
 int HighPixel=0;
 bool Up=1;
-int BrightnessArray[]={
-  0,0,0,0,0,0,0,0,0
-};
+int BrightnessArray[PixelCount];
 void setup() {
   strip.begin();
   clearStrip(); // Initialize all pixels to 'off'
