@@ -16,7 +16,7 @@ void setup() {
 void loop(){
   for(int x = 0;x<PixelCount;x++){
     for(int i=0;i<PixelCount;i++){
-      BrightnessArray[i]=BrightnessArray[i]-63;
+      BrightnessArray[i]=BrightnessArray[i]/1.5;
       if(BrightnessArray[i]<0)BrightnessArray[i]=0;
     }
     BrightnessArray[x]=255;
@@ -28,7 +28,7 @@ void loop(){
   }
   for(int x = PixelCount-1;x>0;x--){
     for(int i=0;i<PixelCount;i++){
-      BrightnessArray[i]=BrightnessArray[i]-63;
+      BrightnessArray[i]=BrightnessArray[i]/1.5;
       if(BrightnessArray[i]<0)BrightnessArray[i]=0;
     }
     BrightnessArray[x]=255;
