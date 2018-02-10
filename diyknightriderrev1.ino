@@ -1,17 +1,25 @@
 #include <Adafruit_NeoPixel.h>
+#define ENCODER_DO_NOT_USE_INTERRUPTS
+#include <Encoder.h>
 
 // SETUP YOUR OUTPUT PIN AND NUMBER OF PIXELS
 #define PIN 5
 #define PixelCount 9
-#define Delay 100
-#define Decay 1.5
-#define DimDelay 50
+unsigned long Delay=0;
+float Decay=1.5;
+#define DimDelay 5
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(PixelCount, PIN, NEO_GRBW + NEO_KHZ800);
+Encoder myEnc(0, 2);
+#define EncoderButtonPin 4
+unsigned long LastEncoderButton=millis();
 unsigned long lastTime = millis();
 unsigned long lastTimeDim = millis();
 int HighPixel=0;
 bool Up=1;
 int BrightnessArray[PixelCount];
+long Delayposition  = -999;
+long Decayposition =-999;
+bool DelayorDecay=0;
 void setup() {
   strip.begin();
   clearStrip(); // Initialize all pixels to 'off'
@@ -19,6 +27,24 @@ void setup() {
 }
 
 void loop(){
+  long newPos = myEnc.read();
+  if(!digitalRead(EncoderButtonPin) && millis()-LastEncoderButton>5)DelayorDecay=!DelayorDecay;
+  if(!DelayorDecay)
+  {
+    if (newPos != Delayposition)
+    {
+      Delay=Delay+newPos;
+      myEnc.write(0);
+    }
+  }
+  else
+  {
+    if (newPos != Decayposition)
+    {
+      Decay=Decay+(.01*newPos);
+      myEnc.write(0);
+    }
+  }
   dimBrightnessArray();
   setHighPixel();
   strip.show();
